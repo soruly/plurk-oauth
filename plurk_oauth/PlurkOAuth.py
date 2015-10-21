@@ -1,6 +1,10 @@
 import oauth2 as oauth
 import urlparse
 from urllib import urlencode
+from poster.encode import multipart_encode
+from poster.streaminghttp import register_openers
+import urllib2
+register_openers()
 
 class PlurkOAuth:
     def __init__(self, customer_key = None, customer_secret = None):
@@ -36,7 +40,7 @@ class PlurkOAuth:
             verifier = self.get_verifier()
             self.get_access_token(verifier)
 
-    def request(self, url, params = None, data = None):
+    def request(self, url, params = None, data = None, file = None):
 
         # Setup
         if self.oauth_token:
@@ -45,6 +49,27 @@ class PlurkOAuth:
         client = oauth.Client(self.consumer, self.token)
         req = self._make_request(self.baseURL + url, params)
 
+        if files:
+            compiled_postdata = req.to_postdata()
+            all_upload_params = urlparse.parse_qs(compiled_postdata, keep_blank_values=True)
+            for key, val in all_upload_params.iteritems():
+                all_upload_params[key] = val[0]
+            
+            all_upload_params['image'] = open(files, 'rb')
+            
+            datagen, headers = multipart_encode(all_upload_params)
+            
+            request = urllib2.Request(self.baseURL + url, datagen, headers)
+            
+            try:
+                respdata = urllib2.urlopen(request).read()
+            except urllib2.HTTPError, ex:
+                print >> sys.stderr, 'Received error code: ', ex.code
+                print >> sys.stderr
+                print >> sys.stderr, ex
+                sys.exit(1)
+            return '200', respdata, 'OK'
+        
         # Get Request Token
         encodedContent = None
         if data:

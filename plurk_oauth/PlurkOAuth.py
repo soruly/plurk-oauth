@@ -49,13 +49,13 @@ class PlurkOAuth:
         client = oauth.Client(self.consumer, self.token)
         req = self._make_request(self.baseURL + url, params)
 
-        if files:
+        if file:
             compiled_postdata = req.to_postdata()
             all_upload_params = urlparse.parse_qs(compiled_postdata, keep_blank_values=True)
             for key, val in all_upload_params.iteritems():
                 all_upload_params[key] = val[0]
             
-            all_upload_params['image'] = open(files, 'rb')
+            all_upload_params['image'] = open(file, 'rb')
             
             datagen, headers = multipart_encode(all_upload_params)
             

@@ -35,7 +35,7 @@ if __name__ == '__main__':
     search_dir = "/home/soruly/plurk/"
     os.chdir(search_dir)
     files = glob.glob('*')
-    if len(files) > 0:
+    if len(files) > 5:
         content = ''
         sources = []
         files = [os.path.join(search_dir, f) for f in files] # add path to each file

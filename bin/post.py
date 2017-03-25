@@ -56,6 +56,6 @@ if __name__ == '__main__':
             os.remove(file)
         response = plurk.callAPI('/APP/Timeline/plurkAdd', {'content': content, 'qualifier': ':'})
         print response
-        for source in sources:
+        for source in list(set(sources)):
             response = plurk.callAPI('/APP/Responses/responseAdd', {'plurk_id' : response['plurk_id'], 'content': source, 'qualifier': ':'})
             print response

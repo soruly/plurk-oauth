@@ -43,7 +43,7 @@ if __name__ == '__main__':
         for file in files:
             response = plurk.callAPI('/APP/Timeline/uploadPicture', {}, os.path.abspath(file))
             print response
-            if len(content + response['full'] + ' ') >= 250:
+            if len(content + response['full'] + ' ') >= 310:
                 break
             content = content + response['full'] + ' '
             match_pixiv = re.findall(r'(\d+)_p\d+.*\.(?:jpg|png|bmp|gif)', file)

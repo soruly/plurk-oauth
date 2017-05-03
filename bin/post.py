@@ -50,7 +50,7 @@ if __name__ == '__main__':
             match_twitter = re.findall(r'twitter\.com(\S+)status(\d+).*\.(?:jpg|png|bmp|gif)', file)
             print match_twitter
             if len(match_pixiv) > 0:
-                sources.append('http://www.pixiv.net/member_illust.php?mode=medium&illust_id='+match_pixiv[0])
+                sources.append('https://www.pixiv.net/member_illust.php?mode=medium&illust_id='+match_pixiv[0])
             elif len(match_twitter) > 0:
                 sources.append('https://twitter.com/'+match_twitter[0][0]+'/status/'+match_twitter[0][1])
             os.remove(file)

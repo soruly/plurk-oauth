@@ -1,3 +1,4 @@
+import sys
 import oauth2 as oauth
 import urlparse
 from urllib import urlencode
@@ -25,8 +26,8 @@ class PlurkOAuth:
         return self.baseURL
 
     def _dump(self, data):
-        #import pprint
-        #pprint.pprint(data)
+        import pprint
+        pprint.pprint(data)
         pass
 
     def authorize(self, access_token_key = None, access_token_secret = None):
@@ -40,7 +41,7 @@ class PlurkOAuth:
             verifier = self.get_verifier()
             self.get_access_token(verifier)
 
-    def request(self, url, params = None, data = None, file = None):
+    def request(self, url, params = None, data = None, files = None):
 
         # Setup
         if self.oauth_token:
@@ -49,13 +50,13 @@ class PlurkOAuth:
         client = oauth.Client(self.consumer, self.token)
         req = self._make_request(self.baseURL + url, params)
 
-        if file:
+        if files:
             compiled_postdata = req.to_postdata()
             all_upload_params = urlparse.parse_qs(compiled_postdata, keep_blank_values=True)
             for key, val in all_upload_params.iteritems():
                 all_upload_params[key] = val[0]
             
-            all_upload_params['image'] = open(file, 'rb')
+            all_upload_params['image'] = open(files, 'rb')
             
             datagen, headers = multipart_encode(all_upload_params)
             

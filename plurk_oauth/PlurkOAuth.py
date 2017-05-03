@@ -9,7 +9,7 @@ register_openers()
 
 class PlurkOAuth:
     def __init__(self, customer_key = None, customer_secret = None):
-        self.baseURL = 'http://www.plurk.com'
+        self.baseURL = 'https://www.plurk.com'
         self.request_token_url = '/OAuth/request_token'
         self.authorization_url = '/OAuth/authorize'
         self.access_token_url  = '/OAuth/access_token'

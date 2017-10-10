@@ -8,7 +8,7 @@ register_openers()
 
 class PlurkOAuth:
     def __init__(self, customer_key = None, customer_secret = None):
-        self.baseURL = 'http://www.plurk.com'
+        self.baseURL = 'https://www.plurk.com'
         self.request_token_url = '/OAuth/request_token'
         self.authorization_url = '/OAuth/authorize'
         self.access_token_url  = '/OAuth/access_token'
@@ -47,7 +47,7 @@ class PlurkOAuth:
             self.token = oauth.Token(self.oauth_token['oauth_token'],
                     self.oauth_token['oauth_token_secret'])
         client = oauth.Client(self.consumer, self.token)
-        req = self._make_request(self.baseURL + url, params)
+        req = self._make_request(self.baseURL + url, data)
 
         if file:
             compiled_postdata = req.to_postdata()
@@ -74,8 +74,7 @@ class PlurkOAuth:
         encodedContent = None
         if data:
             encodedContent = urlencode(data)
-        resp, content = client.request(self.baseURL + url, "POST",
-                headers=req.to_header(), body = encodedContent)
+        resp, content = client.request(self.baseURL + url, "POST", body = encodedContent)
         return resp['status'], content, resp.reason
 
 

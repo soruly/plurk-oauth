@@ -3,7 +3,7 @@ sys.path.append('plurk_oauth/')
 from PlurkAPI import PlurkAPI
 import getopt
 import json
-import urllib
+import urllib2
 import opencc
 
 def usage():
@@ -30,11 +30,11 @@ if __name__ == '__main__':
         json.dump(data,file)
 
     qualifier = ':'
-    response = urllib.urlopen('http://api.hitokoto.us/rand?cat=a')
-    data = json.loads(response.read())
-    content = opencc.convert(data['hitokoto'] + " [emo76]\n -- " + data['source'], config='s2t.json')
+    response = urllib2.urlopen('http://api.hitokoto.cn/?c=a&encode=json')
+    data = json.loads(response.read().decode('utf-8'))
+    content = opencc.convert(data['hitokoto'] + " [emo76]\n -- " + data['from'], config='s2t.json')
     content = content.encode('utf-8')
-    source = 'http://hitokoto.us/view/' + str(data['id']) + '.html'
+    source = 'http://hitokoto.cn/?id=' + str(data['id'])
     
     response = plurk.callAPI('/APP/Timeline/plurkAdd', {'content': content, 'qualifier': qualifier})
     response = plurk.callAPI('/APP/Responses/responseAdd', {'plurk_id' : response['plurk_id'], 'content': source, 'qualifier': ':'})

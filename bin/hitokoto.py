@@ -30,7 +30,8 @@ if __name__ == '__main__':
         json.dump(data,file)
 
     qualifier = ':'
-    response = urllib2.urlopen('http://api.hitokoto.cn/?c=a&encode=json')
+    request = urllib2.Request('https://v1.hitokoto.cn', headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36'})
+    response = urllib2.urlopen(request)
     data = json.loads(response.read().decode('utf-8'))
     content = opencc.convert(data['hitokoto'] + " [emo76]\n -- " + data['from'], config='s2t.json')
     content = content.encode('utf-8')
